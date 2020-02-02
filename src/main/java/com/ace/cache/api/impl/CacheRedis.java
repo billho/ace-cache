@@ -162,12 +162,13 @@ public class CacheRedis implements CacheAPI {
         if (value instanceof String) {
             realValue = value.toString();
         } else {
-            realValue = JSON.toJSONString(value, false);
+//            realValue = JSON.toJSONString(value, SerializerFeature.DisableCircularReferenceDetect);
+            realValue = JSON.toJSONString(value,false);
         }
         String realKey = CacheConstants.PRE + addSys(key);
         Date time = new DateTime(redisCacheService.getExpireDate(realKey)).plusMinutes(expireMin).toDate();
         CacheBean cache = new CacheBean(realKey, desc, time);
-        String result = JSON.toJSONString(cache, SerializerFeature.DisableCircularReferenceDetect);
+        String result = JSON.toJSONString(cache, false);
         redisCacheService.set(addSys(key), result, expireMin * 60);
         redisCacheService.set(realKey, realValue, expireMin * 60);
     }

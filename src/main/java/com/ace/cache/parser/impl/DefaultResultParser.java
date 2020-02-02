@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.alibaba.fastjson.JSON;
 import com.ace.cache.parser.ICacheResultParser;
+import com.alibaba.fastjson.JSONObject;
 
 /**
  * 默认缓存结果解析类
@@ -27,7 +28,12 @@ public class DefaultResultParser implements ICacheResultParser {
 //                result = JSON.parseArray(value, (Class) parameterizedType.getActualTypeArguments()[0]);
                 //fix 多层泛型引起的bug
                 if (parameterizedType.getActualTypeArguments()[0] instanceof ParameterizedType) {
-                    result = JSON.parseArray(value, parameterizedType.getActualTypeArguments());
+                    if(JSONObject.class.equals(((ParameterizedType)(parameterizedType.getActualTypeArguments()[0])).getActualTypeArguments()[0])){
+                        result = JSON.parseArray(value,(Class)((ParameterizedType)(parameterizedType.getActualTypeArguments()[0])).getRawType());
+                    }
+                    else {
+                        result = JSON.parseArray(value, parameterizedType.getActualTypeArguments());
+                    }
                 }
                 else {
                     result = JSON.parseArray(value, (Class) parameterizedType.getActualTypeArguments()[0]);
