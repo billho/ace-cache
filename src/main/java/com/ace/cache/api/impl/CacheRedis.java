@@ -10,6 +10,7 @@ import com.ace.cache.api.CacheAPI;
 import com.ace.cache.config.RedisConfig;
 import com.ace.cache.constants.CacheConstants;
 import com.ace.cache.entity.CacheBean;
+import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -166,7 +167,7 @@ public class CacheRedis implements CacheAPI {
         String realKey = CacheConstants.PRE + addSys(key);
         Date time = new DateTime(redisCacheService.getExpireDate(realKey)).plusMinutes(expireMin).toDate();
         CacheBean cache = new CacheBean(realKey, desc, time);
-        String result = JSON.toJSONString(cache, false);
+        String result = JSON.toJSONString(cache, SerializerFeature.DisableCircularReferenceDetect);
         redisCacheService.set(addSys(key), result, expireMin * 60);
         redisCacheService.set(realKey, realValue, expireMin * 60);
     }
