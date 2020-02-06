@@ -63,8 +63,15 @@ public class CacheGlobalLockAspect {
         }
         //Lock
         lock(key,anno.expire());
-        Object result = invocation.proceed();
-        unlock(key);
+        Object result =null;
+        try {
+             result = invocation.proceed();
+        }
+        catch (Exception e){
+            unlock(key);
+            log.error(e.getMessage(),e);
+            throw e;
+        }
         return result;
     }
 
