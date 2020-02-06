@@ -58,17 +58,21 @@ public class CacheGlobalLockAspect {
                 }
             }
             else{
+                log.warn("Cannot acquire globalLock " + anno.key()) ;
                 return null;
             }
         }
         //Lock
         lock(key,anno.expire());
+        log.debug("acquire globalLock " + anno.key() + ":" + value);
         Object result =null;
         try {
             result = invocation.proceed();
+            log.debug("release globalLock " + anno.key() + ":" + value);
             unlock(key);
         }
         catch (Exception e){
+            log.debug("release globalLock " + anno.key() + ":" + value);
             unlock(key);
             log.error(e.getMessage(),e);
             throw e;
