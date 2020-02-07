@@ -45,7 +45,7 @@ public @interface Cache {
     public CacheScope scope() default CacheScope.application;
 
     /**
-     * 过期时间
+     * 过期时间(单位分钟)
      *
      * @return
      * @author Ace
