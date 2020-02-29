@@ -118,7 +118,7 @@ public class CacheClearAspect {
             });
         }
         key = null;
-        keyPres.clear();
+        if(null!= keyPres)keyPres.clear();
     }
 
     /**

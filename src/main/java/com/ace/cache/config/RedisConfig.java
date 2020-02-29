@@ -28,17 +28,23 @@ public class RedisConfig {
     private String port;
     private String enable;
     private String sysName;
-
-
     private String userKey;
-
     private Long refreshTimeout;
-
+    /**
+     * 是否开启本地化缓存
+     */
+    private boolean enableLocalCache;
+    /**
+     * 本地化缓存大小
+     */
+    private Long localCacheSize;
 
     @PostConstruct
     public void  init(){
         PropertiesLoaderUtils prop = new PropertiesLoaderUtils("application.properties");
         host = prop.getProperty("redis.host");
+        enableLocalCache =true;
+        localCacheSize = 10000L;
         if(StringUtils.isBlank(host)){
             host = env.getProperty("redis.host");
             maxActive = env.getProperty("redis.pool.maxActive");
@@ -50,6 +56,12 @@ public class RedisConfig {
             port = env.getProperty("redis.port");
             sysName = env.getProperty("redis.sysName");
             enable = env.getProperty("redis.enable");
+            if (env.containsProperty("redis.enableLocalCache")){
+                this.enableLocalCache = Boolean.getBoolean(env.getProperty("redis.enableLocalCache"));
+            }
+            if (env.containsProperty("redis.localCacheSize")){
+                this.localCacheSize = Long.parseLong(env.getProperty("redis.localCacheSize"));
+            }
         } else{
             maxActive = prop.getProperty("redis.pool.maxActive");
             maxIdle  = prop.getProperty("redis.pool.maxIdle");
@@ -60,6 +72,12 @@ public class RedisConfig {
             port = prop.getProperty("redis.port");
             sysName = prop.getProperty("redis.sysName");
             enable = prop.getProperty("redis.enable");
+            if (StringUtils.isNotBlank(prop.getProperty("redis.enableLocalCache"))){
+                this.enableLocalCache = Boolean.getBoolean(prop.getProperty("redis.enableLocalCache"));
+            }
+            if (StringUtils.isNotBlank(prop.getProperty("redis.localCacheSize"))){
+                this.localCacheSize = Long.parseLong(prop.getProperty("redis.localCacheSize"));
+            }
         }
         userKey= prop.getProperty("redis.userkey");
 
@@ -196,5 +214,19 @@ public class RedisConfig {
     }
     public Long getRefreshTimeout(){
         return this.refreshTimeout;
+    }
+    public boolean isEnableLocalCache() {
+        return enableLocalCache;
+    }
+
+    public void setEnableLocalCache(boolean enableLocalCache) {
+        this.enableLocalCache = enableLocalCache;
+    }
+    public Long getLocalCacheSize() {
+        return localCacheSize;
+    }
+
+    public void setLocalCacheSize(Long localCacheSize) {
+        this.localCacheSize = localCacheSize;
     }
 }

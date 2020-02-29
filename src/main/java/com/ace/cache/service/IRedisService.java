@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import redis.clients.jedis.BinaryClient;
 import redis.clients.jedis.BinaryClient.LIST_POSITION;
 
-public interface IRedisService {
-
+public interface IRedisService extends IBaseCacheService{
     /**
      * <p>
      * 通过key获取储存在redis中的value
@@ -441,7 +441,7 @@ public interface IRedisService {
      * @param value 添加的value
      * @return
      */
-    Long linsert(String key, LIST_POSITION where, String pivot, String value);
+    Long linsert(String key, BinaryClient.LIST_POSITION where, String pivot, String value);
 
     /**
      * <p>

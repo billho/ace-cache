@@ -10,10 +10,12 @@ import com.ace.cache.api.CacheAPI;
 import com.ace.cache.config.RedisConfig;
 import com.ace.cache.constants.CacheConstants;
 import com.ace.cache.entity.CacheBean;
+import com.ace.cache.service.IBaseCacheService;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +38,9 @@ public class CacheRedis implements CacheAPI {
     private RedisConfig redisConfig;
 
     @Autowired
-    private IRedisService redisCacheService;
+    @Qualifier(value = "redisAndLocalCacheServiceImpl")
+//    @Qualifier(value = "redisServiceImpl")
+    private IBaseCacheService redisCacheService;
 
     @Override
     public String get(String key) {
