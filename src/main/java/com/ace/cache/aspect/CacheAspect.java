@@ -65,7 +65,7 @@ public class CacheAspect {
                 }
             }
         } catch (Exception e) {
-            log.error("获取缓存失败：" + key, e);
+            log.error("获取缓存失败：" + "key=>" + key + ", value=>" + value, e);
         } finally {
             if (result == null) {
                 result = invocation.proceed();
