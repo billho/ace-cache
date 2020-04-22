@@ -10,7 +10,7 @@ import com.ace.cache.constants.CacheScope;
  * @date 2017年5月18日
  * @since 1.7
  */
-public abstract class IKeyGenerator {
+public abstract class  IKeyGenerator {
     public static final String LINK = "_";
 
     /**
@@ -27,6 +27,8 @@ public abstract class IKeyGenerator {
         StringBuffer sb = new StringBuffer("");
         key = buildKey(key, scope, parameterTypes, arguments);
         sb.append(key);
+
+        //添加use后缀
         if (CacheScope.user.equals(scope)) {
             if (getUserKeyGenerator() != null)
                 sb.append(LINK)

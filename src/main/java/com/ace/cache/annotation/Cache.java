@@ -51,7 +51,7 @@ public @interface Cache {
      * @author Ace
      * @date 2017年5月3日
      */
-    public int expire() default 720;
+    public int expire() default 2880;
 
     /**
      * 描述
